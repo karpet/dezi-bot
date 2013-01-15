@@ -1,8 +1,10 @@
 package Dezi::Bot;
 use warnings;
 use strict;
+use SWISH::Prog::Aggregator::Spider;
+use Dezi::Bot::Queue;
 
-our $VERSION = '0.001'
+our $VERSION = '0.001';
 
 =head1 NAME
 
@@ -11,6 +13,14 @@ Dezi::Bot - web crawler
 =head1 SYNOPSIS
 
  use Dezi::Bot;
+
+ my $spider = Dezi::Bot->new();
+ $spider->crawl('http://dezi.org');
+
+=head1 DESCRIPTION
+
+The Dezi::Bot module uses SWISH::Prog::Aggregator::Spider
+optimized for parallel use.
 
 =cut
 
