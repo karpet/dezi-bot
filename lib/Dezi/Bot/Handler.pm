@@ -1,59 +1,52 @@
-package Dezi::Bot;
-use warnings;
+package Dezi::Bot::Handler;
 use strict;
-use base qw( SWISH::Prog::Class );
-use SWISH::Prog::Aggregator::Spider;
-use Dezi::Bot::Queue;
-use Dezi::Bot::Cache;
-use Parallel::Prefork;
+use warnings;
+use Carp;
 
 our $VERSION = '0.001';
 
 =head1 NAME
 
-Dezi::Bot - web crawler
+Dezi::Bot::Handler - web crawler handler
 
 =head1 SYNOPSIS
 
- use Dezi::Bot;
-
- my $bot = Dezi::Bot->new(
-    workers => 4,  # will fork this many spiders
-    
-    # each worker does hands every crawled URI
-    # to the handle() method of an instance of this class
-    handler => 'Dezi::Bot::Handler',
-    
-    # passed to SWISH::Prog::Aggregator::Spider->new()
-    spider_config   => {
-        agent      => 'dezibot ' . $Dezi::Bot::VERSION,
-        email      => 'bot@dezi.org',
-        max_depth  => 4,
-    },
-    
-    # passed to Dezi::Bot::Cache->new()
-    cache_config => {
-        driver      => 'File',
-        root_dir    => '/tmp/dezibot',
-    },
-    
-    # passed to Dezi::Bot::Queue->new()
-    queue_config => {
-        type     => 'DBI',
-        dsn      => "DBI:mysql:database=dezibot;host=localhost;port=3306",
-        username => 'myuser',
-        password => 'mysecret',
-    },
- );
- 
- $bot->crawl('http://dezi.org');
+ use Dezi::Bot::Handler;
+ my $handler = Dezi::Bot::Handler->new();
+ $handler->handle( $swish_prog_doc );
 
 =head1 DESCRIPTION
 
-The Dezi::Bot module uses SWISH::Prog::Aggregator::Spider
-optimized for parallel use.
+The Dezi::Bot::Handler manages each doc the crawler
+successfully encounters.
+
+=head1 METHODS
+
+=head2 new( I<config> )
+
+Returns a new Dezi::Bot::Handler object. Each
+subclass may define its own definition for I<config>.
 
 =cut
+
+sub new {
+    my $class = shift;
+    return bless {@_}, $class;
+}
+
+=head2 handle( I<doc> )
+
+Subclasses are expected to override this method.
+The default behavior is to print the I<doc>->uri
+to stderr.
+
+=cut
+
+sub handle {
+    my $self = shift;
+    my $doc  = shift;
+    warn $doc->uri;
+}
 
 1;
 
@@ -112,4 +105,5 @@ See http://dev.perl.org/licenses/ for more information.
 
 
 =cut
+
 

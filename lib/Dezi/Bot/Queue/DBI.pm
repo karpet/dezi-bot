@@ -249,7 +249,8 @@ for initializing a B<dezi_queue> SQL table.
 
 Example:
 
- perl -e 'use Dezi::Bot::Queue::DBI; print Dezi::Bot::Queue::DBI::schema' | sqlite3 dezi.index/queue.db
+ perl -e 'use Dezi::Bot::Queue::DBI; print Dezi::Bot::Queue::DBI::schema' |\
+  sqlite3 dezi.index/bot.db
 
 =cut
 
@@ -263,7 +264,7 @@ create table dezi_queue (
     uri_md5     char(32),
     priority    integer,
     queue_name  varchar(255),
-    client_id   varchar(255),
+    client_name varchar(255),
     constraint uri_md5_unique unique (uri_md5)
 );
 EOF

@@ -37,7 +37,7 @@ while optimized for persistent storage.
 
 =head2 new( I<config> )
 
-Returns a new Dezi::Stats object. I<config> should be a series
+Returns a new Dezi::Bot::Queue object. I<config> should be a series
 of key/value pairs (a hash). Supported I<config> params are:
 
 =over

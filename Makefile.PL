@@ -5,11 +5,17 @@ use 5.008003;
 
 name 'Dezi-Bot';
 all_from 'lib/Dezi/Bot.pm';
-requires 'Test::More'       => 0;
-requires 'SWISH::Prog'      => 0.67;
-requires 'Module::Load'     => 0;
-requires 'DBIx::Connector'  => 0;
-requires 'DBIx::InsertHash' => 0;
+requires 'Test::More'        => 0;
+requires 'SWISH::Prog'       => 0.67;
+requires 'Module::Load'      => 0;
+requires 'DBIx::Connector'   => 0;
+requires 'DBIx::InsertHash'  => 0;
+requires 'CHI'               => 0;
+requires 'File::Temp'        => 0;
+requires 'Data::Dump'        => 0;
+requires 'Time::HiRes'       => 0;
+requires 'Parallel::Prefork' => 0;
+requires 'Digest::MD5'       => 0;
 
 perl_version '5.8.3';
 license 'http://dev.perl.org/licenses/';
