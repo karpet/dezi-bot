@@ -1,54 +1,90 @@
-package Dezi::Bot::Handler;
+package Dezi::Bot::Spider;
 use strict;
 use warnings;
+use base qw( SWISH::Prog::Aggregator::Spider );
 use Carp;
-use Data::Dump qw( dump );
 
 our $VERSION = '0.001';
 
 =head1 NAME
 
-Dezi::Bot::Handler - web crawler handler
+Dezi::Bot::Spider - web crawler
 
 =head1 SYNOPSIS
 
- use Dezi::Bot::Handler;
- my $handler = Dezi::Bot::Handler->new();
- $handler->handle( $swish_prog_doc );
+ use Dezi::Bot::Spider;
+
+ my $spider = Dezi::Bot::Spider->new(); 
+ $spider->crawl( 'http://dezi.org/' ); 
 
 =head1 DESCRIPTION
 
-The Dezi::Bot::Handler manages each doc the crawler
-successfully encounters.
+The Dezi::Bot::Spider is a subclass of L<SWISH::Prog::Aggregator::Spider>.
 
 =head1 METHODS
 
-=head2 new( I<config> )
-
-Returns a new Dezi::Bot::Handler object. Each
-subclass may define its own definition for I<config>.
+Only new or overridden methods are documented here.
+See L<SWISH::Prog::Aggregator::Spider>.
 
 =cut
 
-sub new {
-    my $class = shift;
-    return bless {@_}, $class;
-}
-
-=head2 handle( I<bot>, I<doc> )
-
-Subclasses are expected to override this method.
-The default behavior is to print the I<doc>->uri
-to stderr.
-
-=cut
-
-sub handle {
+sub init {
     my $self = shift;
-    my $bot  = shift;
-    my $doc  = shift;
-    warn sprintf( "%s crawled %s\n", $bot->name, $doc->url );
+    my %args = @_;
+
+    # our defaults
+    $args{agent} ||= sprintf( "dezibot-%s/%s", $$, $VERSION );
+    $args{email} ||= 'bot@dezi.org';
+
+    $self->SUPER::init(%args);
+
+    return $self;
 }
+
+=head2 add_to_queue( I<uri> )
+
+Add I<uri> to the queue.
+
+=cut
+
+sub add_to_queue {
+    my $self = shift;
+    my $uri = shift or croak "uri required";
+    return $self->queue->put( $uri, client_name => $self->agent, );
+}
+
+#=head2 next_from_queue
+#
+#Return next I<uri> from queue.
+#
+#=cut
+#
+#sub next_from_queue {
+#    my $self = shift;
+#    return $self->queue->get();
+#}
+#
+#=head2 left_in_queue
+#
+#Returns queue()->size().
+#
+#=cut
+#
+#sub left_in_queue {
+#    return shift->queue->size();
+#}
+#
+#=head2 remove_from_queue( I<uri> )
+#
+#Calls queue()->remove(I<uri>).
+#
+#=cut
+#
+#sub remove_from_queue {
+#    my $self = shift;
+#    my $uri = shift or croak "uri required";
+#    return $self->queue->remove($uri);
+#}
 
 1;
 

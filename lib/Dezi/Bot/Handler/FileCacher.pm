@@ -1,8 +1,8 @@
 package Dezi::Bot::Handler::FileCacher;
 use strict;
 use warnings;
-use Carp;
 use base 'Dezi::Bot::Handler';
+use Carp;
 use Digest::MD5 qw( md5_hex );
 use DBIx::Connector;
 use DBIx::InsertHash;
@@ -42,15 +42,15 @@ I<config> must have:
 
 =item dsn
 
-Passed to DBI->new.
+Passed to DBI->connect.
 
 =item username
 
-Passed to DBI->new.
+Passed to DBI->connect.
 
 =item password
 
-Passed to DBI->new.
+Passed to DBI->connect.
 
 =item root_dir
 

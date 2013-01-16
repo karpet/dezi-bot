@@ -1,7 +1,9 @@
 package Dezi::Bot::Queue::DBI;
 use strict;
 use warnings;
+use base 'Dezi::Bot::Queue';
 use Carp;
+use URI;
 use Data::Dump qw( dump );
 use DBIx::Connector;
 use DBIx::InsertHash;
@@ -46,8 +48,12 @@ Sets up the internal database handle (accessible via conn() attribute).
 =cut
 
 sub init_store {
-    my $self     = shift;
-    my $dsn      = delete $self->{dsn} or croak "dsn required";
+    my $self = shift;
+
+    # name used in put/get
+    $self->{name} ||= 'dezibot';
+
+    my $dsn      = delete $self->{dsn}      or croak "dsn required";
     my $username = delete $self->{username} or croak "username required";
     my $password = delete $self->{password} or croak "password required";
     $self->{table_name} ||= 'dezi_queue';
@@ -97,6 +103,7 @@ sub put {
         uri_md5    => $md5,
         uri        => $item,
         queue_time => Time::HiRes::time(),
+        queue_name => $self->name,
         %cols,
     };
     $self->{conn}->run(
@@ -128,16 +135,16 @@ sub get {
             my $dbh = $_;    # just for clarity
             my $sth
                 = $dbh->prepare(
-                qq/select * from $t where lock_time=0 order by priority DESC, queue_time ASC limit ?/
+                qq/select * from $t where queue_name=? and lock_time=0 order by priority DESC, queue_time ASC limit ?/
                 );
-            $sth->execute($limit);
+            $sth->execute( $self->name, $limit );
             while ( my $row = $sth->fetchrow_hashref() ) {
-                push @items, $row->{uri};
+                push @items, URI->new( $row->{uri} );
 
                 # lock
                 $row->{lock_time} = Time::HiRes::time();
 
-                # mixin
+                # mixin/override
                 $row->{$_} = $update_cols->{$_} for keys %$update_cols;
 
                 # update

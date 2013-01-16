@@ -116,6 +116,18 @@ sub init_store {
     croak "$self must implement init_store()";
 }
 
+=head2 name
+
+Get/set the name of the queue.
+
+=cut
+
+sub name {
+    my $self = shift;
+    $self->{name} = $_[0] if defined $_[0];
+    return $self->{name};
+}
+
 =head2 put( I<item> )
 
 Add I<item> to the queue.
