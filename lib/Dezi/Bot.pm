@@ -107,40 +107,10 @@ sub init {
 }
 
 sub crawl {
-    my $self  = shift;
-    my @urls  = @_;
-    my $total = 0;
-
-    #    my $queue = $self->queue_class->new( %{ $self->queue_config } );
-    #
-    #    # warm the queue if it isn't already
-    #    # in theory this should help prevent forked
-    #    # kids from competing for the same
-    #    if ( !$queue->size ) {
-    #
-    #        my $spider = $self->_init_spider( max_depth => 1 );
-    #        $total += $spider->crawl(@urls);
-    #
-    #    }
-
-    # based on what our queue size is now,
-    # spawn $n spiders up to $self->workers.
-    # one spider for every url.
-    # if we have more @urls than workers,
-    # then call repeatedly until @urls is empty.
-
-URLS: while (@urls) {
-        my @slice = ();
-        my $n     = $self->workers;
-    WORKER: while ( $n-- > 0 ) {
-            my $url = shift(@urls);
-            last WORKER unless defined $url;
-            push @slice, $url;
-        }
-        $total += $self->_crawl_slice(@slice);
-    }
-
-    return $total;
+    my $self   = shift;
+    my @urls   = @_;
+    my $spider = $self->_init_spider();
+    return $spider->crawl(@urls);
 }
 
 sub _init_spider {
@@ -163,75 +133,6 @@ sub _init_spider {
     );
 
     return $spider;
-}
-
-sub _crawl_slice {
-    my $self = shift;
-    my @urls = @_;
-
-    my $n_urls = scalar(@urls);
-    warn "[master $$] slice has $n_urls urls\n";
-
-    #    my $pm = Parallel::Prefork->new(
-    #        {   max_workers  => $n_urls,
-    #            trap_signals => {
-    #                TERM => 'TERM',
-    #                HUP  => 'TERM',
-    #                USR1 => undef,
-    #            },
-    #            on_child_reap => sub {
-    #                my ( $ppf, $pid, $exit ) = @_;
-    #                warn "$pid exited with $exit";
-    #            },
-    #        }
-    #    );
-
-    my $debug    = $self->debug;
-    my $subtotal = 0;
-
-    my $pm = Parallel::ForkManager->new($n_urls);
-    $pm->run_on_finish(
-        sub {
-            my ( $pid, $exit_code, $ident, $exit_signal, $core_dump, $count )
-                = @_;
-            $debug and warn "$ident $pid exited with $exit_code\n";
-            if ( defined($$count) ) {
-                $subtotal += $$count;
-            }
-
-          # problems occuring during storage or retrieval will throw a warning
-            else {
-                warn "No message received from child process $pid!\n";
-            }
-        }
-    );
-    $pm->run_on_start(
-        sub {
-            my ( $pid, $ident ) = @_;
-            $debug and warn "** $ident started, pid: $pid\n";
-        }
-    );
-
-    for my $url (@urls) {
-        warn "uri: $url";
-
-        #while ( $pm->signal_received ne 'TERM' ) {
-        $pm->start($url) and next;
-
-        warn "$$ started spider->crawl('$url')\n";
-        my $spider = $self->_init_spider();
-
-        #dump $spider;
-        my $count = $spider->crawl($url) || 0;
-
-        warn "$$ crawled $count urls\n";
-
-        $pm->finish( 0, \$count );
-    }
-
-    $pm->wait_all_children();
-
-    return $subtotal;
 }
 
 1;

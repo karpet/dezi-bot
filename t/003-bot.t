@@ -1,10 +1,10 @@
 #!/usr/bin/env perl
 use strict;
 use warnings;
-use Test::More tests => 12;
+use Test::More tests => 8;
 use lib 't';
 
-my $num_tests = 12;
+my $num_tests = 8;
 
 use Carp;
 use Data::Dump qw( dump );
@@ -99,19 +99,10 @@ SKIP: {
         "new Bot"
     );
 
-    # start servers
-    my @servers;
-    my @uris;
-    my @ports = ( 8080 .. 8090 );
-    for my $port (@ports) {
-        my $s = TestServer->new($port);
-        my $u = $s->started_ok("start http server on port $port");
-        push @servers, $s;
-        push @uris,    $u;
-    }
-
-    diag( "server pids: " . dump( TestServer->pids ) );
+    # start server
+    my $server = TestServer->new();
+    my $url    = $server->started_ok("start http server");
 
     # start crawling
-    is( $bot->crawl(@uris), 10, "crawl" );
+    is( $bot->crawl($url), 4, "crawl" );
 }
