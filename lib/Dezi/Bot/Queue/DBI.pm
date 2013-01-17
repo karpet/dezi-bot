@@ -53,9 +53,11 @@ sub init_store {
     # name used in put/get
     $self->{name} ||= 'dezibot';
 
-    my $dsn      = delete $self->{dsn}      or croak "dsn required";
-    my $username = delete $self->{username} or croak "username required";
-    my $password = delete $self->{password} or croak "password required";
+    my $dsn = delete $self->{dsn} or croak "Queue dsn required";
+    my $username = delete $self->{username}
+        or croak "Queue username required";
+    my $password = delete $self->{password}
+        or croak "Queue password required";
     $self->{table_name} ||= 'dezi_queue';
     $self->{conn} = DBIx::Connector->new(
         $dsn,

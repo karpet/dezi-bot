@@ -5,15 +5,12 @@ use base qw( SWISH::Prog::Class );
 use Carp;
 use Data::Dump qw( dump );
 use Module::Load;
-use SWISH::Prog::Test::Indexer;
-use Parallel::ForkManager;
 
 our $VERSION = '0.001';
 
 __PACKAGE__->mk_accessors(
     qw(
         name
-        workers
         handler_class
         handler_config
         queue_class
@@ -27,19 +24,16 @@ __PACKAGE__->mk_accessors(
 
 =head1 NAME
 
-Dezi::Bot - parallel web crawler
+Dezi::Bot - web crawler
 
 =head1 SYNOPSIS
 
  use Dezi::Bot;
 
  my $bot = Dezi::Bot->new(
- 
-    # will fork this many spiders
-    workers => 4,  
-    
-    # each worker hands every crawled URI
-    # to the $handler->handle() method
+     
+    # every crawled URI
+    # passed to the $handler->handle() method
     handler_class => 'Dezi::Bot::Handler',
     
     # default
@@ -80,13 +74,21 @@ Dezi::Bot - parallel web crawler
 The Dezi::Bot module is a web crawler optimized for parallel
 use across multiple hosts.
 
+=head1 METHODS
+
+=cut
+
+=head2 init( I<args> )
+
+Overrides the base method to set default options based on I<args>.
+See the SYNOPSIS.
+
 =cut
 
 sub init {
     my $self = shift;
     $self->SUPER::init(@_);
     $self->{name}          ||= 'dezibot';
-    $self->{workers}       ||= 1;
     $self->{spider_class}  ||= 'Dezi::Bot::Spider';
     $self->{cache_class}   ||= 'Dezi::Bot::Cache';
     $self->{queue_class}   ||= 'Dezi::Bot::Queue';
@@ -105,6 +107,14 @@ sub init {
 
     return $self;
 }
+
+=head2 crawl( I<urls> )
+
+Will invoke a Dezi::Bot::Spider for an array of I<urls>.
+
+Returns the total number of URIs crawled.
+
+=cut
 
 sub crawl {
     my $self   = shift;
@@ -138,8 +148,6 @@ sub _init_spider {
 1;
 
 __END__
-
-=head1 METHODS
 
 =head1 AUTHOR
 

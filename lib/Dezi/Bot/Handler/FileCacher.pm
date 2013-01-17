@@ -79,6 +79,8 @@ sub handler {
     my $md5         = md5_hex( $doc->uri );
     my $md5_content = md5_hex( $doc->content );
     my $file_path   = $self->_get_path_for($md5);
+    
+    # TODO write file, update meta in db
 }
 
 sub _get_path_for {

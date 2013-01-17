@@ -8,7 +8,7 @@ our $VERSION = '0.001';
 
 =head1 NAME
 
-Dezi::Bot::Spider - web crawler
+Dezi::Bot::Spider - web spider
 
 =head1 SYNOPSIS
 

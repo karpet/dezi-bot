@@ -30,6 +30,8 @@ homepage 'https://github.com/karpet/dezi-bot';
 bugtracker 'http://rt.cpan.org/NoAuth/Bugs.html?Dist=Dezi-Bot';
 repository 'http://github.com/karpet/dezi-bot';
 
+install_script 'bin/dezibot';
+
 WriteMakefile(
     PL_FILES => {},
     dist     => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
