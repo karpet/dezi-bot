@@ -33,7 +33,7 @@ sub init {
     my %args = @_;
 
     # our defaults
-    $args{agent} ||= sprintf( "dezibot-%s/%s", $$, $VERSION );
+    $args{agent} ||= sprintf( "dezibot/%s-%s", $VERSION, $$ );
     $args{email} ||= 'bot@dezi.org';
 
     $self->SUPER::init(%args);
