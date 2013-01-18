@@ -34,9 +34,13 @@ my $config = {
         password => 'ignored',
     },
     spider_config => {
-        debug => 3,
-        email => 'bot-test@dezi.org',
-        delay => 0,                     # CHANGE THIS! for real servers
+        debug      => $ENV{PERL_DEBUG},
+        email      => 'bot-test@dezi.org',
+        file_rules => [
+            'filename contains \?', # skip any link with query params attached
+            'pathname is /~karpet/', # skip root
+        ],
+        delay => 0,                 # CHANGE THIS! for real servers
     },
     queue_config => {
         type     => 'DBI',
