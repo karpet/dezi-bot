@@ -11,6 +11,7 @@ our $VERSION = '0.001';
 __PACKAGE__->mk_accessors(
     qw(
         name
+        spider
         handler_class
         handler_config
         queue_class
@@ -117,10 +118,10 @@ Returns the total number of URIs crawled.
 =cut
 
 sub crawl {
-    my $self   = shift;
-    my @urls   = @_;
-    my $spider = $self->_init_spider();
-    return $spider->crawl(@urls);
+    my $self = shift;
+    my @urls = @_;
+    $self->spider( $self->_init_spider() ) unless $self->spider;
+    return $self->spider->crawl(@urls);
 }
 
 sub _init_spider {
@@ -141,6 +142,9 @@ sub _init_spider {
             return $doc;
         },
     );
+
+    # keep each spider's queue distinct in Queue::DBI
+    $spider->queue->name( $spider->agent );
 
     return $spider;
 }
