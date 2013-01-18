@@ -6,6 +6,7 @@ use Getopt::Long;
 use Pod::Usage;
 use Config::Any;
 use File::Slurp;
+use Data::Dump qw( dump );
 use Parallel::Forker;
 use Parallel::Scoreboard;
 use Dezi::Bot;
@@ -22,8 +23,8 @@ my $pool_size;
 
 GetOptions(
     'help'          => \$help,
-    'debug'         => \$debug,
-    'verbose'       => \$verbose,
+    'debug:i'       => \$debug,
+    'verbose:i'     => \$verbose,
     'config_file=s' => \$config_file,
     'urls=s'        => \$urls_file,
     'workers=i'     => \$workers,
@@ -54,6 +55,10 @@ if ($config_file) {
 # merge config, allowing command line to override file
 $config->{debug}   = $debug;
 $config->{verbose} = $verbose;
+for my $key (qw( spider_config queue_config cache_config handler_config )) {
+    $config->{$key}->{verbose} = $verbose if defined $verbose;
+    $config->{$key}->{debug}   = $debug   if defined $debug;
+}
 
 # make sure our URL list is unqiue
 my %uniq;
@@ -68,6 +73,8 @@ for my $u (@urls) {
 my $n_urls = scalar(@uniq_urls);
 $workers   ||= 1;
 $pool_size ||= int( $n_urls / $workers );
+
+$debug and dump $config;
 
 # simple case, no parallel
 if ( $workers == 1 ) {
