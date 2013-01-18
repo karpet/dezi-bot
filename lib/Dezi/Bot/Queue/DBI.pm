@@ -51,7 +51,7 @@ sub init_store {
     my $self = shift;
 
     # name used in put/get
-    $self->{name} ||= 'dezibot';
+    $self->{name} ||= 'dezibot-' . $$;
 
     my $dsn = delete $self->{dsn} or croak "Queue dsn required";
     my $username = delete $self->{username}

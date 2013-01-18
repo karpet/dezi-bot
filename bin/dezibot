@@ -104,17 +104,16 @@ if ( $n_urls <= $workers ) {
             run_on_start => sub {
                 my $proc = shift;
                 if ($verbose) {
-                    warn sprintf( "[%s] starting %s\n",
-                        $proc->pid, $proc->name );
+                    warn sprintf( "[%s] starting %s\n", $$, $proc->name );
                 }
-                my $bot = Dezi::Bot->new($config);
+                my $bot = Dezi::Bot->new(%$config);
                 $bot->crawl( $proc->name );
             },
             run_on_finish => sub {
                 my ( $proc, $exit_status ) = @_;
                 if ($verbose) {
-                    warn sprintf( "[$$] crawl(%s) exited with %s\n",
-                        $proc->pid, $proc->name, $exit_status );
+                    warn sprintf( "crawl(%s) exited with %s\n",
+                        $proc->name, $exit_status );
                 }
             },
         );

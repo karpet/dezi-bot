@@ -47,7 +47,8 @@ sub handle {
     my $self = shift;
     my $bot  = shift;
     my $doc  = shift;
-    warn sprintf( "%s crawled %s\n", $bot->name, $doc->url );
+    warn
+        sprintf( "[%s] %s crawled %s\n", $$, $bot->spider->agent, $doc->url );
 }
 
 1;
