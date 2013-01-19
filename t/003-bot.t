@@ -71,11 +71,10 @@ SKIP: {
     my $tmp_cachedir = tempdir( CLEANUP => 1 );
 
     ok( my $bot = Dezi::Bot->new(
-            workers        => 2,
             handler_class  => 'TestHandler',
             handler_config => {
                 root_dir => $tmpdir,
-                dns      => $dsn,
+                dsn      => $dsn,
                 username => 'ignored',
                 password => 'ignored',
             },

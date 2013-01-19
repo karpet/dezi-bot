@@ -32,6 +32,12 @@ Dezi::Bot - web crawler
  use Dezi::Bot;
 
  my $bot = Dezi::Bot->new(
+ 
+    # give your bot a name
+    name => 'dezibot',  
+    
+    # explicit object, instead of class+config
+    spider => $spider_object,  
      
     # every crawled URI
     # passed to the $handler->handle() method
@@ -84,6 +90,32 @@ use across multiple hosts.
 Overrides the base method to set default options based on I<args>.
 See the SYNOPSIS.
 
+Options:
+
+=over
+
+=item name
+
+=item spider
+
+=item handler_class
+
+=item handler_config
+
+=item spider_class
+
+=item spider_config
+
+=item cache_class
+
+=item cache_config
+
+=item queue_class
+
+=item queue_config
+
+=back
+
 =cut
 
 sub init {
@@ -111,7 +143,7 @@ sub init {
 
 =head2 crawl( I<urls> )
 
-Will invoke a Dezi::Bot::Spider for an array of I<urls>.
+Calls ->spider->crawl() for an array of I<urls>.
 
 Returns the total number of URIs crawled.
 
@@ -120,7 +152,9 @@ Returns the total number of URIs crawled.
 sub crawl {
     my $self = shift;
     my @urls = @_;
-    $self->spider( $self->_init_spider() ) unless $self->spider;
+    if ( !$self->spider ) {
+        $self->spider( $self->_init_spider() );
+    }
     return $self->spider->crawl(@urls);
 }
 

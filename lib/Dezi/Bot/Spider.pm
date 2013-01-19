@@ -28,6 +28,13 @@ See L<SWISH::Prog::Aggregator::Spider>.
 
 =cut
 
+=head2 init( I<args> )
+
+Internal method for initializing object. I<args> are passed
+through to L<SWISH::Prog::Aggregator::Spider> constructor.
+
+=cut
+
 sub init {
     my $self = shift;
     my %args = @_;
@@ -52,6 +59,8 @@ sub add_to_queue {
     my $uri = shift or croak "uri required";
     return $self->queue->put( $uri, client_name => $self->agent, );
 }
+
+# These aren't needed yet. here for reference.
 
 #=head2 next_from_queue
 #

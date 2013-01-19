@@ -3,6 +3,7 @@ use strict;
 use warnings;
 use Carp;
 use Data::Dump qw( dump );
+use base qw( SWISH::Prog::Class );
 
 our $VERSION = '0.001';
 
@@ -29,11 +30,6 @@ Returns a new Dezi::Bot::Handler object. Each
 subclass may define its own definition for I<config>.
 
 =cut
-
-sub new {
-    my $class = shift;
-    return bless {@_}, $class;
-}
 
 =head2 handle( I<bot>, I<doc> )
 

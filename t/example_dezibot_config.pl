@@ -7,6 +7,7 @@ use Dezi::Bot::Handler::FileCacher;
 
 # init temp db
 my ( undef, $dbfile ) = tempfile();
+$dbfile = $ENV{DEZI_BOT_DBFILE} if $ENV{DEZI_BOT_DBFILE};
 my $dsn = 'dbi:SQLite:dbname=' . $dbfile;
 my $dbh = DBI->connect($dsn);
 
@@ -27,9 +28,10 @@ my $cachedir = tempdir();    # don't clean up
 warn "cachedir=$cachedir\n";
 
 my $config = {
+    handler_class  => 'Dezi::Bot::Handler::FileCacher',
     handler_config => {
-        root_dir => $tmpdir,
-        dns      => $dsn,
+        root_dir => $cachedir,
+        dsn      => $dsn,
         username => 'ignored',
         password => 'ignored',
     },
@@ -38,9 +40,9 @@ my $config = {
         email      => 'bot-test@dezi.org',
         file_rules => [
             'filename contains \?', # skip any link with query params attached
-            'pathname is /~karpet/', # skip root
+            'pathname is /~karpet/',    # skip root
         ],
-        delay => 0,                 # CHANGE THIS! for real servers
+        delay => 0,                     # CHANGE THIS! for real servers
     },
     queue_config => {
         type     => 'DBI',
@@ -50,7 +52,7 @@ my $config = {
     },
     cache_config => {
         driver    => 'File',
-        root_dir  => $cachedir,
+        root_dir  => $tmpdir,
         namespace => 'dezibot',
     },
 };

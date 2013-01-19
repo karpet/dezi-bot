@@ -99,7 +99,7 @@ sub put {
         croak "item required";
     }
     my %cols = @_;
-    my $md5  = md5_hex($item);
+    my $md5  = md5_hex("$item");
     my $row  = {
         lock_time  => 0,
         uri_md5    => $md5,
@@ -171,7 +171,7 @@ sub remove {
         croak "item required";
     }
     my $count = 0;
-    my $md5   = md5_hex($item);
+    my $md5   = md5_hex("$item");
     my $t     = $self->{table_name};
     $self->{conn}->run(
         sub {
@@ -265,7 +265,7 @@ Example:
 
 sub schema {
     return <<EOF
-create table dezi_queue (
+create table if not exists dezi_queue (
     id          integer primary key autoincrement,
     lock_time   float,
     queue_time  float,

@@ -124,6 +124,7 @@ if ( $n_urls <= $workers ) {
     exit(0);
 }
 
+# TODO
 # if urls > workers, divide urls into pools
 # of $pool_size, and assign each pool to a worker.
 # if we can't schedule all urls immediately,
