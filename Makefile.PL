@@ -17,7 +17,7 @@ requires 'File::Temp'           => 0;
 requires 'Data::Dump'           => 0;
 requires 'Time::HiRes'          => 0;
 requires 'Parallel::Forker'     => 0;
-requiers 'Parallel::Scoreboard' => 0;
+requires 'Parallel::Scoreboard' => 0;
 requires 'Digest::MD5'          => 0;
 
 # test dependencies
