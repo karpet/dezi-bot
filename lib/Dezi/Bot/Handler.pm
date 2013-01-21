@@ -51,8 +51,6 @@ sub handle {
 
 __END__
 
-=head1 METHODS
-
 =head1 AUTHOR
 
 Peter Karman, C<< <karman at cpan.org> >>

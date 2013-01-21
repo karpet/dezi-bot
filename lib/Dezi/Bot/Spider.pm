@@ -99,8 +99,6 @@ sub add_to_queue {
 
 __END__
 
-=head1 METHODS
-
 =head1 AUTHOR
 
 Peter Karman, C<< <karman at cpan.org> >>
