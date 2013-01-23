@@ -4,7 +4,7 @@ use warnings;
 use base qw( SWISH::Prog::Aggregator::Spider );
 use Carp;
 
-our $VERSION = '0.001';
+our $VERSION = '0.002';
 
 =head1 NAME
 
@@ -57,7 +57,7 @@ Add I<uri> to the queue.
 sub add_to_queue {
     my $self = shift;
     my $uri = shift or croak "uri required";
-    return $self->queue->put( $uri, client_name => $self->agent, );
+    return $self->queue->put( "$uri", client_name => $self->agent, );
 }
 
 # These aren't needed yet. here for reference.

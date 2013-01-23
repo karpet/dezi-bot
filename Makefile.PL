@@ -8,7 +8,7 @@ all_from 'lib/Dezi/Bot.pm';
 
 # runtime dependencies
 requires 'Test::More'           => 0;
-requires 'SWISH::Prog'          => 0.67;
+requires 'SWISH::Prog'          => 0.68;
 requires 'Module::Load'         => 0;
 requires 'DBIx::Connector'      => 0;
 requires 'DBIx::InsertHash'     => 0;

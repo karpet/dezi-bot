@@ -3,3 +3,6 @@ Revision history for Dezi-Bot
 0.001   19 Jan 2013
         Initial release.
 
+0.002   23 Jan 2013
+    * misc doc fixes, Makefile.PL fixes
+
