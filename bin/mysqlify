@@ -1,36 +1,31 @@
+#!/usr/bin/env perl
+
+use strict;
 use SQL::Translator;
 use Dezi::Bot::Queue::DBI;
 use Dezi::Bot::Handler::FileCacher;
 
-my $sql        = Dezi::Bot::Queue::DBI::schema();
-my $translator = SQL::Translator->new(
-    debug => 1,
-    show_warnings     => 1,
-    validate          => 1,
-    quote_identifiers => 1,
-    no_comments       => 1,
-);
+for my $class (qw( Dezi::Bot::Queue::DBI Dezi::Bot::Handler::FileCacher )) {
+    my $sql        = $class->schema();
+    my $translator = SQL::Translator->new(
+        debug             => 1,
+        show_warnings     => 1,
+        validate          => 1,
+        quote_identifiers => 1,
+        no_comments       => 1,
+    );
 
-# translator does not like this though sqlite3 is fine.
-$sql =~ s/if not exists//;
+    # translator does not like this though sqlite3 is fine.
+    $sql =~ s/if not exists//;
 
-#warn "sql:$sql\n";
+    #warn "sql:$sql\n";
 
-my $mysql = $translator->translate(
-    from       => 'SQLite',
-    to         => 'MySQL',
-    datasource => \$sql
-) or die $translator->error;
+    my $mysql = $translator->translate(
+        from       => 'SQLite',
+        to         => 'MySQL',
+        datasource => \$sql
+    ) or die $translator->error;
 
-print $mysql, $/;
-
-$sql = Dezi::Bot::Handler::FileCacher::schema();
-$sql =~ s/if not exists//;
-$mysql = $translator->translate(
-    from       => 'SQLite',
-    to         => 'MySQL',
-    datasource => \$sql
-) or die $translator->error;
-
-print $mysql, $/;
+    print $mysql, $/;
+}
 
