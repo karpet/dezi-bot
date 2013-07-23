@@ -19,6 +19,7 @@ __PACKAGE__->mk_accessors(
         username
         password
         table_name
+        queue_name
         quote
         quote_char
         )
@@ -72,6 +73,11 @@ Passed to DBI->connect.
 
 The B<table_name> value will be used
 to insert rows. Defaults to C<dezi_file_cache>.
+
+=item queue_name
+
+The B<queue_name> value will be inserted
+for each row in the database.
 
 =item quote
 
@@ -151,7 +157,7 @@ sub handle {
         uri_md5     => $uri_md5,
         content_md5 => $content_md5,
         uri         => $doc->url,
-        queue_name  => $bot->spider->agent,
+        queue_name  => ( $self->queue_name || $bot->spider->agent ),
         client_name => $bot->spider->agent,
         upd_time    => $doc->modtime,
     );
