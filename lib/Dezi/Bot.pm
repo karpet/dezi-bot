@@ -6,7 +6,7 @@ use Carp;
 use Data::Dump qw( dump );
 use Module::Load;
 
-our $VERSION = '0.002';
+our $VERSION = '0.003';
 
 __PACKAGE__->mk_accessors(
     qw(

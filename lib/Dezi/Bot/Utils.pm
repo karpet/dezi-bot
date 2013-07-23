@@ -5,7 +5,7 @@ use Carp;
 use Data::Dump qw( dump );
 use Path::Class;
 
-our $VERSION = '0.002';
+our $VERSION = '0.003';
 
 =head1 NAME
 

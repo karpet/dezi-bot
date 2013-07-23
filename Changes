@@ -6,3 +6,6 @@ Revision history for Dezi-Bot
 0.002   23 Jan 2013
     * misc doc fixes, Makefile.PL fixes
 
+0.003   xxx
+    * fix encoding bug with taking md5 of content in FileCacher handler
+

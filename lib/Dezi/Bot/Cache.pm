@@ -3,7 +3,7 @@ use warnings;
 use strict;
 use CHI;
 
-our $VERSION = '0.002';
+our $VERSION = '0.003';
 
 =head1 NAME
 

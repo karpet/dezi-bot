@@ -4,7 +4,7 @@ use warnings;
 use base qw( SWISH::Prog::Aggregator::Spider );
 use Carp;
 
-our $VERSION = '0.002';
+our $VERSION = '0.003';
 
 =head1 NAME
 

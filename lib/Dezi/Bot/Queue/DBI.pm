@@ -10,7 +10,7 @@ use DBIx::InsertHash;
 use Digest::MD5 qw( md5_hex );
 use Time::HiRes;
 
-our $VERSION = '0.002';
+our $VERSION = '0.003';
 
 =head1 NAME
 
