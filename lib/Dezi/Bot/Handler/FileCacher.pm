@@ -9,6 +9,8 @@ use DBIx::InsertHash;
 use Time::HiRes;
 use Dezi::Bot::Utils;
 use File::Slurp;
+use Encode;
+use Search::Tools::UTF8;
 
 __PACKAGE__->mk_accessors(
     qw(
@@ -137,7 +139,7 @@ sub handle {
     my $doc         = shift or croak "Doc required";
     my $buf_ref     = \$doc->content;
     my $uri_md5     = md5_hex( $doc->url . "" );
-    my $content_md5 = md5_hex($$buf_ref);
+    my $content_md5 = md5_hex( encode_utf8( to_utf8($$buf_ref) ) );
     my $file_path
         = Dezi::Bot::Utils::file_cache_path( $self->{root_dir}, $uri_md5 );
 
