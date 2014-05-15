@@ -5,7 +5,7 @@ use Carp;
 use Data::Dump qw( dump );
 use base qw( SWISH::Prog::Class );
 
-our $VERSION = '0.003';
+our $VERSION = '0.004';
 
 =head1 NAME
 

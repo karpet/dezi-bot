@@ -1,5 +1,8 @@
 Revision history for Dezi-Bot
 
+0.004 xxx
+ - switch to File::Slurp::Tiny
+
 0.003 30 April 2014
  - fix encoding bug with taking md5 of content in FileCacher handler
  - pod tests require RELEASE_TESTING=1
