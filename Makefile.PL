@@ -19,6 +19,7 @@ requires 'Time::HiRes'          => 0;
 requires 'Parallel::Forker'     => 0;
 requires 'Parallel::Scoreboard' => 0;
 requires 'Digest::MD5'          => 0;
+requires 'File::Slurp::Tiny'    => 0;
 
 # test dependencies
 test_requires 'DBD::SQLite'                => 0;

@@ -8,7 +8,7 @@ use DBIx::Connector;
 use DBIx::InsertHash;
 use Time::HiRes;
 use Dezi::Bot::Utils;
-use File::Slurp;
+use File::Slurp::Tiny qw( write_file );
 use Encode;
 use Search::Tools::UTF8;
 
